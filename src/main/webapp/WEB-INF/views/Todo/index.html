@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="/resources/bootstrap/css/bootstrap.min.css" th:href="@{/resources/bootstrap/css/bootstrap.min.css}" rel="stylesheet"  type="text/css" />
+</head>
+<body>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>Todo一覧</h1>
+      <p th:if="${emptyMessage}" th:text="${emptyMessage}">empty message</p>
+      <p th:if="${errorMessage}" th:text="${errorMessage}">error message</p>
+      <p th:if="${deleteMessage}" th:text="${deleteMessage}">delete message</p>
+    </div>
+    <div th:fragment="nav" class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-pills">
+          <li role="presentation"><a th:href="@{/}">一覧</a></li>
+          <li role="presentation"><a th:href="@{/create}">新規作成</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <form th:action="@{/search}" method="get">
+          <div class="input-group col-md-12">
+            <input type="text" name="keyword" class="form-control" placeholder="検索キーワードを入力してください" />
+            <span class="input-group-btn">
+              <input class="btn btn-default" type="submit" value="検索" />
+            </span>
+          </div>
+          <div class="input-group">
+            <input type="checkbox" id="doCheck" name="allFlg"/><label for="doCheck">実施済みも表示</label>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>チェック</th>
+              <th>id</th>
+              <th>title</th>
+              <th>detail</th>
+              <th>doFlg</th>
+              <th>update_date</th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="item,iterStat : ${list}">
+              <td>
+                <a class="btn btn-default" th:href="@{/update/{id}(id=${item.id})}">実施</a>
+              </td>
+              <td th:text="${item.id}"></td>
+              <td th:text="${item.title}">1</td>
+              <td th:text="${item.detail}">1</td>
+              <td th:text="${item.doFlg == true}? '済' : '未'">1</td>
+              <td th:text="${item.updateDate}">1</td>
+              <td>
+                <a class="btn btn-info" th:href="@{/{id}(id=${item.id})}">詳細表示</a>
+                <a class="btn btn-danger" th:href="@{/delete/{id}(id=${item.id})}">削除</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div th:fragment="script">
+    <script src="/resources/js/jquery-3.2.1.min.js" th:src="@{/resources/js/jquery-3.2.1.min.js}"></script>
+    <script src="/resources/bootstrap/js/bootstrap.js" th:src="@{/resources/bootstrap/js/bootstrap.js}"></script>
+  </div>
+</body>
+</html>
